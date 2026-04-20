@@ -1,280 +1,236 @@
 # TrustLens AI — Product Requirements Document (PRD)
 
-## 1. Problem Statement
-Traditional digital loan onboarding is form-heavy, easy to manipulate, and weak at real-time trust evaluation. Manual KYC adds delay and cost, while lenders struggle to assess intent, consistency, and repayment reliability during onboarding.
-
-TrustLens AI addresses this gap with a compliance-first, video-based onboarding system that combines adaptive AI interviews, behavioral trust scoring, fraud checks, and instant decisioning.
+## 1. Product Vision
+TrustLens AI is a compliance-first, real-time video onboarding platform for digital lending that combines conversational intelligence, behavioral trust analytics, fraud detection, and deterministic policy enforcement to produce fast, explainable, and audit-ready onboarding decisions.
 
 ---
 
-## 2. Goals & Objectives
-- Digitize loan onboarding end to end with minimal manual intervention.
-- Reduce fraud and misrepresentation risk in real time.
-- Improve conversion by replacing long forms with adaptive conversation.
-- Capture consent and KYC artifacts in an audit-ready format.
-- Generate explainable, personalized loan offers instantly.
+## 2. Problem Statement
+Current digital loan onboarding is slow, easy to manipulate, and expensive to review. Static forms capture declared data but miss behavioral credibility, while manual KYC review adds latency and operational cost. Lenders need a system that can evaluate identity, intent, and risk in a single guided interaction.
 
 ---
 
-## 3. Target Users
-- **Primary:** NBFC digital lending teams and risk operations.
-- **Secondary:** Compliance, KYC, fraud, and audit teams.
-- **End-user:** Loan applicants on mobile/web.
+## 3. Goals & Objectives
+- Reduce onboarding decision turnaround from hours to minutes.
+- Detect fraud and misrepresentation during the session, not after disbursal.
+- Improve applicant completion and conversion through conversational UX.
+- Enforce KYC, consent, and audit traceability for regulatory readiness.
+- Generate explainable outcomes with reason codes and trust timelines.
 
 ---
 
-## 4. Detailed Feature Breakdown
+## 4. Target Users
+- **Primary:** NBFC lending, digital underwriting, and risk teams.
+- **Secondary:** Compliance, KYC operations, fraud operations, internal audit.
+- **End User:** Loan applicants across mobile and web channels.
 
-### 4.1 Cognitive Interview Engine
-- AI-led adaptive questioning instead of static scripts.
-- Follow-up prompts based on confidence gaps and inconsistencies.
-- Structured capture of employment, income, intent, and loan purpose.
+---
 
-### 4.2 Behavioral Trust Engine (USP)
-- Prosody- and response-based trust features (hesitation, confidence, consistency).
-- Trust Score (0–100), truthfulness confidence, and behavioral risk flags.
+## 5. Core Capability Stack
+### 5.1 Cognitive Interview Engine
+- Adaptive interview flow with dynamic follow-up questions.
+- Clarification loops for low-confidence or ambiguous responses.
+- Structured extraction of income, employment, intent, and obligations.
 
-### 4.3 Compliance & KYC Layer
-- Face presence/liveness + age-estimation signal.
-- Verbal consent capture with timestamped transcript anchors.
-- Geo-location and device/IP checks for fraud/compliance.
-- Full audit trail of actions and decisions.
+### 5.2 Behavioral Trust Engine
+- Converts conversational and delivery signals into a normalized trust profile.
+- Emits Trust Score (0–100), confidence band, and anomaly flags.
+- Generates explainable factor-wise breakdown for reviewer visibility.
 
-### 4.4 Risk & Decision Engine
-- Deterministic policy checks (eligibility, exclusions, limits).
-- AI-assisted risk banding and repayment propensity.
-- Offer generation (amount, tenure, rate, EMI options).
-- Explainable decision rationale and reason codes.
+### 5.3 Compliance & KYC Layer
+- Consent capture with timestamped transcript anchors.
+- Face presence, liveness, and age-likelihood signals.
+- Immutable audit record for replay and regulator traceability.
 
-### 4.5 Multi-Agent AI System
+### 5.4 Risk + Policy Engine
+- AI-assisted fraud and risk intelligence.
+- Deterministic policy rules as final decision gate.
+- Offer generation only for policy-compliant and eligible applicants.
+
+### 5.5 Multi-Agent Orchestration
 - Interview Agent
 - Understanding Agent
+- Behavioral Trust Agent
 - Fraud Detection Agent
 - Risk Scoring Agent
-- Loan Offer Agent
-
-An orchestrator coordinates agent outputs while deterministic policy remains the final gate.
+- Offer Agent
 
 ---
 
-## 5. End-to-End User Journey
-1. User opens secure onboarding link from campaign channel.
-2. Session initializes and permission/consent flow begins.
-3. Live AI video interview starts.
-4. System captures video, audio, geo, and session metadata in parallel.
-5. STT, NLP, behavioral analysis, and fraud checks run in near real time.
-6. Risk and policy evaluation compute eligibility.
-7. System generates and displays approval/rejection + offer options.
-8. Audit repository stores transcript, consent, signals, and decisions.
+## 6. Behavioral Trust Scoring Framework
+### 6.1 Trust Score Formula
+**Trust Score (0–100)** =
+- **0.30 × Response Consistency**
+- **+ 0.20 × Voice Confidence**
+- **+ 0.20 × Behavioral Stability**
+- **+ 0.20 × (100 − Fraud Signals)**
+- **+ 0.10 × Profile Completeness**
+
+### 6.2 Factor Definitions
+- **Response Consistency (0–100):** Measures alignment of current answers with earlier statements (income, employer, tenure, purpose).
+- **Voice Confidence (0–100):** Measures vocal certainty from speech rate stability, filler-word density, and abrupt tone shifts.
+- **Behavioral Stability (0–100):** Measures temporal steadiness of response patterns across the interview (sudden stress spikes reduce score).
+- **Fraud Signals (0–100, inverse contribution):** Aggregates anomalies from device/IP mismatch, spoof suspicion, identity mismatch, and semantic contradictions.
+- **Profile Completeness (0–100):** Measures required-field coverage and evidence sufficiency for underwriting.
+
+### 6.3 Behavioral Intelligence Logic
+- **Hesitation Detection:** Calculated from pause duration before answers, repeated restarts, and elevated filler tokens (for example: “uh”, “um”), normalized by question complexity.
+- **Contradiction Detection:** The understanding layer converts responses into structured claims (entity, value, timestamp) and runs pairwise consistency checks against prior claims and submitted profile data.
+- **Confidence Inference:** Derived from combined acoustic confidence (pace, pitch stability, articulation), response directness, and semantic certainty markers; low confidence is flagged when multiple weak signals co-occur.
 
 ---
 
-## 6. Functional Requirements
-- **FR-01:** Secure tokenized session creation and lifecycle management.
-- **FR-02:** Real-time audio/video ingestion and session metadata capture.
-- **FR-03:** Streaming STT with transcript persistence.
-- **FR-04:** Consent phrase detection and compliant recording.
-- **FR-05:** Face/liveness/age signal extraction from video stream.
-- **FR-06:** Structured profile extraction from conversational transcript.
-- **FR-07:** Behavioral trust scoring and inconsistency detection.
-- **FR-08:** Fraud rule execution (geo/device/response mismatch).
-- **FR-09:** Risk scoring and deterministic policy evaluation.
-- **FR-10:** Personalized offer and EMI generation for eligible users.
-- **FR-11:** Explainable output with reason codes and trust timeline.
-- **FR-12:** Centralized audit logging and retrieval APIs.
+## 7. Human vs AI Decision Boundary
+- **AI role:** AI agents assist with understanding, behavioral interpretation, fraud indicators, and risk signals.
+- **Final authority:** Deterministic policy rules execute hard compliance and eligibility checks.
+- **Control principle:** If AI confidence is low or signals conflict, system routes to manual review rather than auto-approval.
+- **Regulatory assurance:** Every final outcome is tied to policy version, rule IDs, reason codes, and traceable evidence.
 
 ---
 
-## 7. Non-Functional Requirements
-- **Latency:** Interim insights under 2 seconds; decision completion target under 120 seconds.
-- **Scalability:** Horizontal scaling for concurrent video sessions.
-- **Reliability:** 99.9% uptime target for onboarding APIs.
-- **Security:** Encryption in transit/at rest, RBAC, PII masking.
-- **Compliance:** Immutable audit logs, consent traceability, decision replay.
-- **Observability:** End-to-end tracing, model versioning, decision lineage.
+## 8. Edge Case Handling & Fail-Safes
+- **Poor network/audio quality:** Trigger quality gate, request repeat answer, switch to fallback question mode, and mark confidence downgrade.
+- **No face detected:** Pause decision pipeline, prompt camera correction, retry bounded times, then route to assisted/manual verification.
+- **Inconsistent answers:** Launch adaptive clarifying questions; unresolved contradiction increases fraud/risk and can force manual review.
+- **High fraud score:** Enforce automatic step-up checks or hard reject based on configured threshold and policy rules.
+- **Low-confidence cases:** Limit autonomous decisioning; require additional evidence or human adjudication before final disposition.
 
 ---
 
-## 8. Success Metrics
-- Onboarding completion rate
-- Median decision turnaround time
-- Fraud detection precision/recall
+## 9. End-to-End Operational Flow
+1. Applicant opens secure onboarding session link.
+2. Consent and permissions are captured before processing.
+3. Live AI interview collects audio, video, and response data.
+4. AI stack extracts transcript, behavioral, and vision signals in real time.
+5. Fraud and risk engines generate scored intelligence.
+6. Deterministic policy applies final approve/reject/manual-review decision.
+7. Offer engine runs for eligible users only.
+8. Audit layer stores complete decision trace and artifacts.
+
+---
+
+## 10. Functional Requirements
+- **FR-01:** Tokenized secure session initiation and expiry control.
+- **FR-02:** Real-time media ingestion with latency-safe buffering.
+- **FR-03:** Streaming STT with timestamped transcript persistence.
+- **FR-04:** Explicit verbal consent capture and validation.
+- **FR-05:** Face/liveness/age signal extraction pipeline.
+- **FR-06:** Structured profile extraction from conversation.
+- **FR-07:** Behavioral trust scoring with explainable factor breakdown.
+- **FR-08:** Fraud scoring using multimodal anomaly indicators.
+- **FR-09:** Risk scoring and deterministic policy execution.
+- **FR-10:** Offer generation for eligible users.
+- **FR-11:** Human-readable decision explanation and trust timeline.
+- **FR-12:** Immutable audit package storage and retrieval.
+
+---
+
+## 11. Non-Functional Requirements
+- **Latency:** Insight updates in near real time; final decision target under 120 seconds.
+- **Availability:** 99.9% service uptime target.
+- **Scalability:** Horizontal concurrency for peak campaign spikes.
+- **Security:** Encryption in transit/at rest, RBAC, PII minimization and masking.
+- **Compliance:** Consent traceability, replayable decision evidence, immutable logs.
+- **Observability:** Event tracing, model/version lineage, policy version capture.
+
+---
+
+## 12. Success Metrics
+- Onboarding completion rate uplift
+- Decision turnaround time reduction
+- Fraud catch rate and false-positive control
 - Manual review rate reduction
-- Consent capture completeness
 - Offer acceptance rate
-- Audit retrieval SLA compliance
+- Compliance evidence completeness
+- Audit retrieval SLA adherence
 
 ---
 
-## 9. Risks & Mitigation
-- **False positives in trust/fraud:** confidence thresholds + manual review queue.
-- **Model drift/bias:** periodic recalibration, monitoring, rollback strategy.
-- **Poor media quality:** quality gates, fallback prompts, retry handling.
-- **Regulatory challenge:** reason-code transparency + immutable evidence trail.
-- **Complex orchestration:** modular services + event-driven pipeline + retries.
+## 13. System Flowcharts (Mermaid)
 
----
-
-## 10. Hackathon Differentiation
-- Behavioral trust scoring layered on top of traditional underwriting.
-- Adaptive interview flow replacing static form experience.
-- Real-time AI + policy fusion for instant decisioning.
-- Compliance-first architecture with consent and audit replay.
-- Trust timeline visualization for explainability and demo impact.
-
----
-
-## 11. System Architecture (Real Flow)
-
-### 11.1 Step-by-Step System Flow
-1. **Session Gateway** validates campaign token and initializes applicant session.
-2. **Frontend (React/Next.js)** opens media channel and collects permissions/geo.
-3. **Media Ingestion Service** splits audio/video streams.
-4. **Audio Pipeline:** Riva STT transcribes streaming speech.
-5. **Video Pipeline:** DeepStream extracts face/liveness/age signals.
-6. **Understanding Layer:** NeMo/LLM normalizes transcript into structured fields.
-7. **Behavioral Layer:** hesitation/confidence/consistency signals become trust score.
-8. **Fraud Layer:** geo/device/IP + statement mismatch analysis.
-9. **Risk + Policy Engine:** deterministic eligibility and risk constraints.
-10. **Offer Engine:** generates amount, tenure, rate, EMI options.
-11. **Audit Service:** stores transcript, consent, signals, reasons, offer payload.
-12. **Frontend Output:** decision, explanation, and trust timeline.
-
-### 11.2 Data Flow
-Capture (video/audio/geo/meta) → Process (STT/CV/NLP/behavior) → Evaluate (fraud/risk/policy) → Decide (approve/reject/conditional) → Store (audit logs) → Display (decision + offers + explanation).
-
-### 11.3 Compliance Flow
-- Consent must be captured and logged before final decision.
-- KYC signals (face/liveness/age) are linked to session events.
-- Geo/device/IP checks are timestamped for traceability.
-- Final decision always includes policy rule IDs and reason codes.
-
----
-
-## 12. Sequence Diagrams (Mermaid)
-
-### 12.1 Full Onboarding Flow
+### 13.1 End-to-End System Flow
 ```mermaid
-sequenceDiagram
-    participant C as Customer
-    participant FE as Frontend
-    participant BE as Backend
-    participant ORCH as Agent Orchestrator
-    participant AI as AI Stack
-    participant DB as Audit DB
-
-    C->>FE: Open secure link
-    FE->>BE: POST /sessions/init
-    BE-->>FE: sessionId + token
-    FE->>C: Request camera/mic/location permissions
-    C-->>FE: Permissions granted
-    FE->>BE: Start video session + stream media
-    BE->>ORCH: Start interview workflow
-    ORCH->>AI: Invoke STT/CV/NLP/behavior modules
-    AI-->>ORCH: Structured insights + scores + flags
-    ORCH->>BE: Eligibility + offer decision package
-    BE->>DB: Store consent/transcript/decision artifacts
-    BE-->>FE: Decision + offers + explanations
-    FE-->>C: Show result + trust timeline
+flowchart TD
+    U[User Opens Secure Link] --> V[Video Session Initialization]
+    V --> C{Consent Captured?}
+    C -- No --> C1[Prompt Consent Again]
+    C1 --> C
+    C -- Yes --> D[Data Capture: Audio, Video, Metadata]
+    D --> A[AI Processing]
+    A --> R[Risk & Fraud Evaluation]
+    R --> P{Policy Compliant?}
+    P -- No --> O1[Reject / Manual Review]
+    P -- Yes --> O2[Decision & Offer Output]
+    O1 --> L[Audit Logs Storage]
+    O2 --> L[Audit Logs Storage]
+    L --> T[Trust Timeline & Explainability]
 ```
 
-### 12.2 Video + AI Processing
+### 13.2 AI Processing Pipeline
 ```mermaid
-sequenceDiagram
-    participant FE as Frontend
-    participant ING as Media Ingestion
-    participant STT as Riva STT
-    participant CV as DeepStream
-    participant NLP as NeMo/LLM
-    participant BEH as Behavioral Engine
-    participant ORCH as Orchestrator
+flowchart TD
+    A1[Audio Stream] --> A2[STT - NVIDIA Riva]
+    A2 --> A3[NLP / Entity Understanding - NeMo]
+    A3 --> A4[Behavioral Analysis]
+    A4 --> A5[Structured Behavioral Data]
+    A5 --> A6[Risk Engine Input]
 
-    FE->>ING: Audio/video stream chunks
-    ING->>STT: Audio
-    ING->>CV: Video frames
-    STT-->>NLP: Transcript chunks
-    CV-->>ORCH: Face/liveness/age signals
-    NLP-->>ORCH: Structured entities + context
-    STT-->>BEH: Pause/prosody/confidence markers
-    NLP-->>BEH: Consistency context
-    BEH-->>ORCH: Trust score + behavioral flags
+    V1[Video Stream] --> V2[Face Detection - DeepStream]
+    V2 --> V3[Age/Liveness Estimation]
+    V3 --> V4[Fraud Signal Extraction]
+    V4 --> A6
 ```
 
-### 12.3 Loan Decision Pipeline
+### 13.3 Decision Engine Flow
 ```mermaid
-sequenceDiagram
-    participant ORCH as Orchestrator
-    participant FRAUD as Fraud Agent
-    participant RISK as Risk Agent
-    participant POLICY as Policy Engine
-    participant OFFER as Offer Engine
-    participant DB as Data Stores
-
-    ORCH->>FRAUD: Profile + geo/device + transcript
-    FRAUD->>DB: Fetch historical fraud references
-    FRAUD-->>ORCH: Fraud score + anomaly flags
-    ORCH->>RISK: Profile + behavioral trust + bureau refs
-    RISK->>DB: Fetch bureau/risk inputs
-    RISK-->>ORCH: Risk band + repayment propensity
-    ORCH->>POLICY: Deterministic eligibility checks
-    POLICY-->>ORCH: Approve/Reject + reason codes
-    ORCH->>OFFER: Generate options for eligible users
-    OFFER-->>ORCH: Amount/tenure/rate/EMI plans
-    ORCH->>DB: Persist final decision package
+flowchart TD
+    I[Input Signals: Profile + Behavioral + KYC + Metadata] --> F{Fraud Check Passed?}
+    F -- No --> R1[Reject / Step-Up Verification]
+    F -- Yes --> S[Risk Scoring]
+    S --> P{Policy Check Passed?}
+    P -- No --> R2[Reject / Manual Review]
+    P -- Yes --> A[Approve]
+    A --> G[Offer Generation]
+    G --> O[Decision Output + Reason Codes]
+    R1 --> O
+    R2 --> O
 ```
 
-### 12.4 Fraud Detection Flow
+### 13.4 Compliance Flow
 ```mermaid
-sequenceDiagram
-    participant FE as Frontend
-    participant BE as Backend
-    participant FRAUD as Fraud Agent
-    participant AI as AI Features
-    participant DB as Fraud/Audit DB
-
-    FE->>BE: Geo/IP/device + verbal responses
-    BE->>AI: Derive inconsistency and anomaly features
-    AI-->>FRAUD: Behavioral mismatch indicators
-    BE->>FRAUD: Declared profile + session metadata
-    FRAUD->>DB: Compare prior sessions/blacklists/patterns
-    FRAUD-->>BE: Fraud score + flags + recommended action
-    BE->>DB: Persist evidence + rationale
-    BE-->>FE: Continue / step-up / reject
+flowchart TD
+    C1[Consent Capture] --> C2[Transcript Creation]
+    C2 --> C3{Consent Phrase Valid?}
+    C3 -- No --> C4[Re-capture Consent]
+    C4 --> C2
+    C3 -- Yes --> C5[Compliance Validation]
+    C5 --> C6[Audit Storage]
+    C6 --> C7[Traceability: Rule IDs + Timestamps + Evidence]
 ```
 
 ---
 
-## 13. API Design
-
-| Endpoint | Purpose | Input | Output |
-|---|---|---|---|
-| `POST /api/v1/sessions/init` | Initialize onboarding session | campaignToken, channel | sessionId, authToken, expiresAt |
-| `POST /api/v1/sessions/{id}/start` | Start controlled video session | permissions, deviceMeta, geo | sessionState, streamConfig |
-| `POST /api/v1/stream/audio` | Ingest audio chunk for STT/behavior | sessionId, chunk, ts | ack, transcriptRef |
-| `POST /api/v1/stream/video` | Ingest video frame batch for CV | sessionId, frameBatch, ts | ack, visionRef |
-| `POST /api/v1/consent/capture` | Log explicit consent event | sessionId, consentText, transcriptRef | consentId, complianceStatus |
-| `POST /api/v1/profile/extract` | Build structured applicant profile | sessionId, transcriptRefs | profile, confidence |
-| `POST /api/v1/fraud/evaluate` | Run fraud checks | sessionId, profile, geo, ip, device | fraudScore, flags, action |
-| `POST /api/v1/risk/evaluate` | Run risk and eligibility modeling | sessionId, profile, bureauRef, trustScore | riskBand, propensity, policyHints |
-| `POST /api/v1/decision/generate` | Final deterministic decision | sessionId, fraudResult, riskResult, policyVersion | status, reasonCodes, explanation |
-| `POST /api/v1/offers/generate` | Generate offer options | sessionId, decisionStatus, riskBand | offers (amount, tenure, rate, emi) |
-| `GET /api/v1/sessions/{id}/timeline` | Return trust/compliance timeline | sessionId | ordered timeline events |
-| `POST /api/v1/audit/store` | Persist final audit package | sessionId, transcript, signals, decision | auditRecordId |
-| `GET /api/v1/decision/{id}` | Fetch final decision output | decisionId | status, explanation, offers |
+## 14. API Surface (Indicative)
+| Endpoint | Purpose |
+|---|---|
+| `POST /api/v1/sessions/init` | Start secure onboarding session |
+| `POST /api/v1/sessions/{id}/start` | Begin controlled interview session |
+| `POST /api/v1/stream/audio` | Ingest audio chunks for STT/behavior |
+| `POST /api/v1/stream/video` | Ingest video frames for vision/fraud |
+| `POST /api/v1/consent/capture` | Record and validate consent |
+| `POST /api/v1/profile/extract` | Build structured applicant profile |
+| `POST /api/v1/fraud/evaluate` | Compute fraud score and flags |
+| `POST /api/v1/risk/evaluate` | Compute risk score and eligibility |
+| `POST /api/v1/decision/generate` | Execute deterministic final decision |
+| `POST /api/v1/offers/generate` | Generate offer options for approved users |
+| `POST /api/v1/audit/store` | Persist immutable audit package |
+| `GET /api/v1/sessions/{id}/timeline` | Fetch trust and compliance timeline |
 
 ---
 
-## 14. AI Components (Real vs Mocked for Hackathon)
-
-| Component | Role | Working Method | Hackathon State |
-|---|---|---|---|
-| Cognitive Interview Agent | Adaptive questioning | Prompt templates + context-aware follow-ups | Real/Partial |
-| NVIDIA Riva STT | Real-time transcription | Streaming ASR with timestamps | Real/Partial |
-| NVIDIA DeepStream Vision | Face/liveness/age signals | Frame-level inference | Mock/Partial |
-| Understanding Agent | Structured extraction | LLM + rule normalization | Real |
-| Behavioral Trust Engine | Trust/confidence scoring | Prosody + pause + contradiction heuristics | Mock/Partial |
-| Fraud Detection Agent | Fraud risk evaluation | Metadata mismatch + semantic inconsistency | Real/Partial |
-| Risk Scoring Agent | Repayment risk banding | Bureau proxy + risk model + policy buckets | Mock/Partial |
-| Loan Offer Agent | Offer plan creation | Rule-based optimization on eligibility/risk | Real |
-| Explainability Layer | Reason codes & timeline | Maps outputs to human-readable rationale | Real |
-
+## 15. Hackathon Differentiation
+- Real-time behavioral trust scoring fused with fraud and risk intelligence.
+- Strong AI depth with multimodal processing (speech + NLP + vision).
+- Explicit AI-to-policy boundary aligned with fintech regulation.
+- Explainable trust timeline for judges, risk teams, and auditors.
+- Deployable architecture with clear path from mock integrations to production services.
