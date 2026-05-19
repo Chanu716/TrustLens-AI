@@ -101,5 +101,13 @@ TrustLens AI delivers a live AI-led onboarding flow that combines:
 
 ---
 
+## Implementation Status
+- ✅ **Phase 1: Foundation & Architecture:** Next.js UI, MongoDB setup, Session lifecycle, Consent flow.
+- ✅ **Phase 2: AI Intelligence Layer:** Real-time socket telemetry, multi-agent mocks (Trust, Intent, Interview), Live transcript/trust UI overlays.
+- ⏳ **Phase 3: Deep NLP & Video Verification:** Integrating NeMo/Riva endpoints for true realtime STT and Computer Vision.
+
+---
+
 ## Documentation
 - Product Requirements Document: [`docs/PRD.md`](docs/PRD.md)
+

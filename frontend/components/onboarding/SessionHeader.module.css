@@ -1,0 +1,107 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.sessionInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sessionLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sessionId {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-primary);
+  background: var(--color-primary-subtle);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(0,200,255,0.15);
+}
+
+.statusChip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.statusDot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--dot-color, var(--color-text-muted));
+}
+
+.statusText { color: var(--dot-color); }
+
+.kycSteps {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.kycStep {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  transition: all var(--transition-base);
+}
+
+.kycStepDone {
+  background: var(--color-trust-subtle);
+  border-color: rgba(0,255,157,0.2);
+  color: var(--color-trust);
+}
+
+.kycStepPending {
+  background: rgba(255,184,48,0.06);
+  border-color: rgba(255,184,48,0.2);
+  color: var(--color-warn);
+}
+
+.kycIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-trust);
+  background: var(--color-trust-subtle);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(0,255,157,0.2);
+}
+
+.timerText { letter-spacing: 0.05em; }
