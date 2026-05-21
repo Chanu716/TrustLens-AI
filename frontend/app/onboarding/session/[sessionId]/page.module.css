@@ -322,3 +322,18 @@
 @media (max-width: 640px) {
   .intelligencePanel { grid-template-columns: 1fr; }
 }
+
+/* Decision View */
+.decisionView {
+  margin-top: var(--space-4);
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+

@@ -7,6 +7,8 @@ import VideoFrame from '@/components/onboarding/VideoFrame';
 import ConsentModal from '@/components/onboarding/ConsentModal';
 import TrustMeter from '@/components/onboarding/TrustMeter';
 import SessionHeader from '@/components/onboarding/SessionHeader';
+import DecisionPanel from '@/components/onboarding/DecisionPanel';
+import type { TimelineEvent } from '@/components/onboarding/TrustTimeline';
 import { sessionAPI } from '@/lib/api';
 import { getSessionToken, getSessionId } from '@/lib/session';
 import { connectSocket, disconnectSocket } from '@/lib/socket';
@@ -42,6 +44,11 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
   const [trustTrend, setTrustTrend] = useState('stable');
   const [activeEngines, setActiveEngines] = useState<Set<string>>(new Set());
   const [intentData, setIntentData] = useState<{ category?: string; urgency?: number; stability?: string }>({});
+
+  // Phase 3: Decision & Timeline State
+  const [decision, setDecision] = useState<any>(null);
+  const [timeline, setTimeline] = useState<TimelineEvent[]>([]);
+  const [sessionComplete, setSessionComplete] = useState(false);
 
   // Load session on mount
   useEffect(() => {
@@ -101,6 +108,22 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
       setActiveEngines((prev) => new Set(prev).add('Cognitive Interview'));
     });
 
+    socket.on('ai:timeline_event', (event: TimelineEvent) => {
+      setTimeline((prev) => [...prev, event]);
+    });
+
+    socket.on('session:complete', (data: any) => {
+      setDecision(data);
+      setSessionComplete(true);
+      setActiveEngines((prev) => {
+        const next = new Set(prev);
+        next.add('Fraud Detection');
+        next.add('Risk & Policy Engine');
+        if (data.offer) next.add('Smart Offer Engine');
+        return next;
+      });
+    });
+
     return () => {
       disconnectSocket(sessionId);
     };
@@ -118,9 +141,9 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
           : prev
       );
       
-      // Trigger backend AI loop
+      // Trigger backend AI loop (pass loan amount for offer engine)
       const socket = connectSocket(sessionId);
-      socket.emit('session:start_ai', sessionId);
+      socket.emit('session:start_ai', { sessionId, loanAmount: session?.loanAmount ?? 50000 });
     } catch (err: unknown) {
       const axiosErr = err as { response?: { data?: { error?: string } } };
       setError(axiosErr?.response?.data?.error || 'Failed to start session.');
@@ -202,8 +225,14 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
           />
         </div>
 
-        {/* Main Content Grid */}
+        {/* Main Content Grid — Live Interview or Decision Panel */}
+        {sessionComplete && decision ? (
+          <div className={styles.decisionView}>
+            <DecisionPanel decision={decision} timeline={timeline} />
+          </div>
+        ) : (
         <div className={styles.grid}>
+
           {/* Left: Video + Controls */}
           <div className={styles.videoPanel}>
             <div className={styles.panelHeader}>
@@ -365,6 +394,7 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
             </div>
           </div>
         </div>
+        )}
       </main>
     </div>
   );

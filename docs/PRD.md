@@ -322,7 +322,7 @@ flowchart TD
 
 ---
 
-## 16. Hackathon Differentiation
+## 16. Platform Differentiation
 - Real-time behavioral trust scoring fused with fraud and risk intelligence.
 - Strong AI depth with multimodal processing (speech + NLP + vision).
 - Intent and emotion-aware underwriting context for better suitability decisions.
